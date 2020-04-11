@@ -2343,8 +2343,9 @@ Supported backends: 'html, 'latex, 'ascii, 'org, 'md, 'pandoc" type type)
 		(pre (car text))
 		(post (cadr text)))
 	   (concat
-	    (format "[@%s," keyword)
-	    (when pre (format " %s" pre))
+      "["
+	    (when pre (format "%s " pre))
+	    (format "@%s" keyword)
 	    (when post (format ", %s" post))
 	    "]")))
 	(t
