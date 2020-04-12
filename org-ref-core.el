@@ -441,6 +441,52 @@ http://ctan.mirrorcatalogs.com/macros/latex/contrib/biblatex/doc/biblatex.pdf"
   :type 'string
   :group 'org-ref)
 
+(defcustom org-ref-pandoc-in-text-citation-types
+  '("citet" "citet*" 
+    "citealt" "citealt*" "citealp" "citealp*"
+    "textcite" "textcites" "Textcite" "Textcites")
+  "Citation commands that will be interpretted as in text style
+citations for pandoc export. On most backends, the author will
+appear in the text, and further citation information and any
+locator/citation suffix will appear in parentheses or a footnote."
+  :type '(repeat :tag "List of citation types" string)
+  :group 'org-ref)
+
+(defcustom org-ref-pandoc-headless-citation-types
+  '("citeyear" "citeyearpar" 
+    "citetitle" "citetitle*"
+    "cite*" "parencite*"
+    "autocite*" "Autocite*"
+    "headlesscite")
+  "Citation commands that will be interpretted as \"headless\"
+citations for pandoc export. The author's name is suppressed in
+this style of citation. These citation types are useful for
+situations where the author's name appears elsewhere in the
+context and repeating it in the citation would be awkward."
+  :type '(repeat :tag "List of citation types" string)
+  :group 'org-ref)
+
+(defcustom org-ref-pandoc-in-text-citation-separator
+  ","
+  "Punctuation used to separate items in a multi-item, in-text
+  type citation on pandoc export"
+  :type 'string
+  :group 'org-ref)
+
+(defcustom org-ref-pandoc-in-text-citation-conjunction
+  "and"
+  "Conjunction used to separate items in a multi-item, in-text
+  type citation on pandoc export"
+  :type 'string
+  :group 'org-ref)
+
+(defcustom org-ref-pandoc-use-oxford-style-punctuation
+  t
+  "Determine whether to use punctuation (the \"Oxford comma\")
+before the the last item on a list of in-text style citations in
+pandoc export"
+  :type 'boolean
+  :group 'org-ref)
 
 (defcustom org-ref-clean-bibtex-entry-hook
   '(org-ref-bibtex-format-url-if-doi
@@ -2338,23 +2384,79 @@ Supported backends: 'html, 'latex, 'ascii, 'org, 'md, 'pandoc" type type)
       ;; for  pandoc we generate pandoc citations
       ((eq format 'pandoc)
        (cond
-	(desc ;; pre and or post text
-	 (let* ((text (split-string desc "::"))
-		(pre (car text))
-		(post (cadr text)))
-	   (concat
-      "["
-	    (when pre (format "%s " pre))
-	    (format "@%s" keyword)
-	    (when post (format ", %s" post))
-	    "]")))
-	(t
-	 (format "[%s]"
-		 (mapconcat
-		  (lambda (key) (concat "@" key))
-		  (org-ref-split-and-strip-string keyword)
-		  "; "))))))))
-
+        (desc ;; pre and or post text
+         (let* ((text (split-string desc "::"))
+                (pre (car text))
+                (post (cadr text)))
+           (cond
+            ;; In text style citation types with prefix or suffix. Note that
+            ;; this code supports prefix arguments for compatibility only.
+            ;; Pandoc does not support prefix arguments for in text style
+            ;; citations. See https://pandoc.org/MANUAL.html#citations
+            ;; Accordingly, prefixes are simply exported as text that precedes
+            ;; the citation.
+            ((member ,type org-ref-pandoc-in-text-citation-types)
+             (concat
+              (when pre (format "%s " pre))
+              (format "@%s" keyword)
+              (when post (format " [%s]" post))
+              ))
+            ;; Headless citation types with prefix or suffix.
+            ((member ,type org-ref-pandoc-headless-citation-types)
+             (concat
+              "["
+              (when pre (format "%s " pre))
+              (format "-@%s" keyword)
+              (when post (format ", %s" post))
+              "]"))
+            ;; All other citation styles with prefix or suffix use default
+            ;; pandoc citation format.
+            (t
+             (concat
+              "["
+              (when pre (format "%s " pre))
+              (format "@%s" keyword)
+              (when post (format ", %s" post))
+              "]")))))
+        (t
+         (cond
+          ((member ,type org-ref-pandoc-in-text-citation-types)
+           (let* ((key-list (org-ref-split-and-strip-string keyword))
+                  (last-key (last key-list))
+                  (other-keys (butlast key-list))
+                  (key-separator
+                   (concat org-ref-pandoc-in-text-citation-separator
+                           " ")))
+             (cond
+              ((> (safe-length (key-list)) 2)
+               (concat
+                (mapconcat
+                 (lambda (key) (concat "@" key))
+                 other-keys
+                 key-separator)
+                (if org-ref-pandoc-use-oxford-style-punctuation
+                    key-separator
+                  " ")
+                org-ref-pandoc-in-text-citation-conjunction
+                " " last-key))
+              (other-keys
+               (concat (car key-list) " "
+                       org-ref-pandoc-in-text-citation-conjunction
+                       "" last-key))
+              (t
+               (concat "@" keyword)))))
+          ((member ,type org-ref-pandoc-headless-citation-types)
+           (mapconcat
+            (lambda (key) (concat "-@" key))
+            (org-ref-split-and-strip-string keyword)
+           "; "))
+          ;; All other headline types
+          (t
+           (format "[%s]"
+                   (mapconcat
+                    (lambda (key) (concat "@" key))
+                    (org-ref-split-and-strip-string keyword)
+                    "; "))))))))))
 
 (defun org-ref-format-citation-description (desc)
   "Return formatted citation description.
