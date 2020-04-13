@@ -2396,11 +2396,15 @@ Supported backends: 'html, 'latex, 'ascii, 'org, 'md, 'pandoc" type type)
             ;; Accordingly, prefixes are simply exported as text that precedes
             ;; the citation.
             ((member ,type org-ref-pandoc-in-text-citation-types)
-             (concat
-              (when pre (format "%s " pre))
-              (format "@%s" keyword)
-              (when post (format " [%s]" post))
-              ))
+             (format "%s"
+                     (concat
+                      (format "\\%s" ,type)
+                      (when pre (format "[%s]" pre))
+                      (if post
+                          (format "[%s]" post)
+                        "[]")
+                      (format "{%s}" keyword)
+              )))
             ;; Headless citation types with prefix or suffix.
             ((member ,type org-ref-pandoc-headless-citation-types)
              (concat
@@ -2422,34 +2426,40 @@ Supported backends: 'html, 'latex, 'ascii, 'org, 'md, 'pandoc" type type)
          (cond
           ((member ,type org-ref-pandoc-in-text-citation-types)
            (let* ((key-list (org-ref-split-and-strip-string keyword))
-                  (last-key (last key-list))
+                  (last-key (car (last key-list)))
                   (other-keys (butlast key-list))
                   (key-separator
                    (concat org-ref-pandoc-in-text-citation-separator
                            " ")))
              (cond
-              ((> (safe-length (key-list)) 2)
-               (concat
-                (mapconcat
-                 (lambda (key) (concat "@" key))
-                 other-keys
-                 key-separator)
-                (if org-ref-pandoc-use-oxford-style-punctuation
-                    key-separator
-                  " ")
-                org-ref-pandoc-in-text-citation-conjunction
-                " " last-key))
+              ((> (safe-length key-list) 2)
+               (format " %s "
+                       (concat
+                        (mapconcat
+                         (lambda (key) (concat "@" key))
+                         other-keys
+                         key-separator)
+                        (if org-ref-pandoc-use-oxford-style-punctuation
+                            key-separator
+                          " ")
+                        org-ref-pandoc-in-text-citation-conjunction
+                        " @" last-key)))
               (other-keys
-               (concat (car key-list) " "
-                       org-ref-pandoc-in-text-citation-conjunction
-                       "" last-key))
+               (format " %s "
+                       (mapconcat
+                        (lambda (key) (concat "@" key))
+                        key-list
+                        (concat " "
+                                org-ref-pandoc-in-text-citation-conjunction
+                                " "))))
               (t
-               (concat "@" keyword)))))
+               (concat " @" keyword " ")))))
           ((member ,type org-ref-pandoc-headless-citation-types)
-           (mapconcat
-            (lambda (key) (concat "-@" key))
-            (org-ref-split-and-strip-string keyword)
-           "; "))
+           (format "[%s]"
+                   (mapconcat
+                    (lambda (key) (concat "-@" key))
+                    (org-ref-split-and-strip-string keyword)
+                    "; ")))
           ;; All other headline types
           (t
            (format "[%s]"
