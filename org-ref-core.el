@@ -2358,10 +2358,9 @@ FORMAT is a symbol for the export backend.
 Supported backends: 'html, 'latex, 'ascii, 'org, 'md, 'pandoc" type type)
      (cond
       ((eq format 'org)
-       (mapconcat
-	(lambda (key)
-	  (format "[[#%s][%s]]" key key))
-	(org-ref-split-and-strip-string keyword) ","))
+       (if desc
+           (format "[[%s:%s][%s]]" ,type keyword desc)
+         (format "%s:%s" ,type keyword)))
 
       ((eq format 'ascii)
        (concat "["
