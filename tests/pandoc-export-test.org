@@ -1,0 +1,132 @@
+#+PANDOC_OPTIONS: filter:pandoc-citeproc
+#+bibliography: test-1.bib
+#+Latex_header: \addbibresource{test-1.bib}
+#+PANDOC_EXTENSIONS: smart
+Biblatex types
+
+1. Type: "Cite". Plain Cite:kitchin-2015-examp. With Pre and post notes: [[Cite:xu-2015-relat][Pre::Post]]. Multiple: [[Cite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+
+2. Type: "parencite". Plain parencite:kitchin-2015-examp. With Pre and post notes: [[parencite:xu-2015-relat][Pre::Post]]. Multiple: [[parencite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+3. Type: "Parencite". Plain Parencite:kitchin-2015-examp. With Pre and post notes: [[Parencite:xu-2015-relat][Pre::Post]]. Multiple: [[Parencite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+4. Type: "footcite". Plain footcite:kitchin-2015-examp. With Pre and post notes: [[footcite:xu-2015-relat][Pre::Post]]. Multiple: [[footcite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+5. Type: "footcitetext". Plain footcitetext:kitchin-2015-examp. With Pre and post notes: [[footcitetext:xu-2015-relat][Pre::Post]]. Multiple: [[footcitetext:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+6. Type: "textcite". Plain textcite:kitchin-2015-examp. With Pre and post notes: [[textcite:xu-2015-relat][Pre::Post]]. Multiple: [[textcite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+7. Type: "Textcite". Plain Textcite:kitchin-2015-examp. With Pre and post notes: [[Textcite:xu-2015-relat][Pre::Post]]. Multiple: [[Textcite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+8. Type: "smartcite". Plain smartcite:kitchin-2015-examp. With Pre and post notes: [[smartcite:xu-2015-relat][Pre::Post]]. Multiple: [[smartcite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+9. Type: "Smartcite". Plain Smartcite:kitchin-2015-examp. With Pre and post notes: [[Smartcite:xu-2015-relat][Pre::Post]]. Multiple: [[Smartcite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+10. Type: "cite*". Plain cite*:kitchin-2015-examp. With Pre and post notes: [[cite*:xu-2015-relat][Pre::Post]]. Multiple: [[cite*:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+11. Type: "parencite*". Plain parencite*:kitchin-2015-examp. With Pre and post notes: [[parencite*:xu-2015-relat][Pre::Post]]. Multiple: [[parencite*:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+12. Type: "supercite". Plain supercite:kitchin-2015-examp. With Pre and post notes: [[supercite:xu-2015-relat][Pre::Post]]. Multiple: [[supercite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+13. Type: "autocite". Plain autocite:kitchin-2015-examp. With Pre and post notes: [[autocite:xu-2015-relat][Pre::Post]]. Multiple: [[autocite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+14. Type: "Autocite". Plain Autocite:kitchin-2015-examp. With Pre and post notes: [[Autocite:xu-2015-relat][Pre::Post]]. Multiple: [[Autocite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+15. Type: "autocite*". Plain autocite*:kitchin-2015-examp. With Pre and post notes: [[autocite*:xu-2015-relat][Pre::Post]]. Multiple: [[autocite*:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+16. Type: "Autocite*". Plain Autocite*:kitchin-2015-examp. With Pre and post notes: [[Autocite*:xu-2015-relat][Pre::Post]]. Multiple: [[Autocite*:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+17. Type: "Citeauthor*". Plain Citeauthor*:kitchin-2015-examp. With Pre and post notes: [[Citeauthor*:xu-2015-relat][Pre::Post]]. Multiple: [[Citeauthor*:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+18. Type: "citetitle". Plain citetitle:kitchin-2015-examp. With Pre and post notes: [[citetitle:xu-2015-relat][Pre::Post]]. Multiple: [[citetitle:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+19. Type: "citetitle*". Plain citetitle*:kitchin-2015-examp. With Pre and post notes: [[citetitle*:xu-2015-relat][Pre::Post]]. Multiple: [[citetitle*:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+20. Type: "citedate". Plain citedate:kitchin-2015-examp. With Pre and post notes: [[citedate:xu-2015-relat][Pre::Post]]. Multiple: [[citedate:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+21. Type: "citedate*". Plain citedate*:kitchin-2015-examp. With Pre and post notes: [[citedate*:xu-2015-relat][Pre::Post]]. Multiple: [[citedate*:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+22. Type: "citeurl". Plain citeurl:kitchin-2015-examp. With Pre and post notes: [[citeurl:xu-2015-relat][Pre::Post]]. Multiple: [[citeurl:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+23. Type: "fullcite". Plain fullcite:kitchin-2015-examp. With Pre and post notes: [[fullcite:xu-2015-relat][Pre::Post]]. Multiple: [[fullcite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+24. Type: "footfullcite". Plain footfullcite:kitchin-2015-examp. With Pre and post notes: [[footfullcite:xu-2015-relat][Pre::Post]]. Multiple: [[footfullcite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+25. Type: "notecite". Plain notecite:kitchin-2015-examp. With Pre and post notes: [[notecite:xu-2015-relat][Pre::Post]]. Multiple: [[notecite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+26. Type: "Notecite". Plain Notecite:kitchin-2015-examp. With Pre and post notes: [[Notecite:xu-2015-relat][Pre::Post]]. Multiple: [[Notecite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+27. Type: "pnotecite". Plain pnotecite:kitchin-2015-examp. With Pre and post notes: [[pnotecite:xu-2015-relat][Pre::Post]]. Multiple: [[pnotecite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+28. Type: "Pnotecite". Plain Pnotecite:kitchin-2015-examp. With Pre and post notes: [[Pnotecite:xu-2015-relat][Pre::Post]]. Multiple: [[Pnotecite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+29. Type: "fnotecite". Plain fnotecite:kitchin-2015-examp. With Pre and post notes: [[fnotecite:xu-2015-relat][Pre::Post]]. Multiple: [[fnotecite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+30. Type: "cites". Plain cites:kitchin-2015-examp. With Pre and post notes: [[cites:xu-2015-relat][Pre::Post]]. Multiple: [[cites:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+31. Type: "Cites". Plain Cites:kitchin-2015-examp. With Pre and post notes: [[Cites:xu-2015-relat][Pre::Post]]. Multiple: [[Cites:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+32. Type: "parencites". Plain parencites:kitchin-2015-examp. With Pre and post notes: [[parencites:xu-2015-relat][Pre::Post]]. Multiple: [[parencites:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+33. Type: "Parencites". Plain Parencites:kitchin-2015-examp. With Pre and post notes: [[Parencites:xu-2015-relat][Pre::Post]]. Multiple: [[Parencites:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+34. Type: "footcites". Plain footcites:kitchin-2015-examp. With Pre and post notes: [[footcites:xu-2015-relat][Pre::Post]]. Multiple: [[footcites:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+35. Type: "footcitetexts". Plain footcitetexts:kitchin-2015-examp. With Pre and post notes: [[footcitetexts:xu-2015-relat][Pre::Post]]. Multiple: [[footcitetexts:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+36. Type: "smartcites". Plain smartcites:kitchin-2015-examp. With Pre and post notes: [[smartcites:xu-2015-relat][Pre::Post]]. Multiple: [[smartcites:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+37. Type: "Smartcites". Plain Smartcites:kitchin-2015-examp. With Pre and post notes: [[Smartcites:xu-2015-relat][Pre::Post]]. Multiple: [[Smartcites:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+38. Type: "textcites". Plain textcites:kitchin-2015-examp. With Pre and post notes: [[textcites:xu-2015-relat][Pre::Post]]. Multiple: [[textcites:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+39. Type: "Textcites". Plain Textcites:kitchin-2015-examp. With Pre and post notes: [[Textcites:xu-2015-relat][Pre::Post]]. Multiple: [[Textcites:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+40. Type: "supercites". Plain supercites:kitchin-2015-examp. With Pre and post notes: [[supercites:xu-2015-relat][Pre::Post]]. Multiple: [[supercites:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+41. Type: "autocites". Plain autocites:kitchin-2015-examp. With Pre and post notes: [[autocites:xu-2015-relat][Pre::Post]]. Multiple: [[autocites:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+42. Type: "Autocites". Plain Autocites:kitchin-2015-examp. With Pre and post notes: [[Autocites:xu-2015-relat][Pre::Post]]. Multiple: [[Autocites:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+Natbib Types
+
+1. Type: "citet". Plain citet:kitchin-2015-examp. With Pre and post notes: [[citet:xu-2015-relat][Pre::Post]]. Multiple: [[citet:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+2. Type: "citet*". Plain citet*:kitchin-2015-examp. With Pre and post notes: [[citet*:xu-2015-relat][Pre::Post]]. Multiple: [[citet*:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+3. Type: "citep". Plain citep:kitchin-2015-examp. With Pre and post notes: [[citep:xu-2015-relat][Pre::Post]]. Multiple: [[citep:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+4. Type: "citep*". Plain citep*:kitchin-2015-examp. With Pre and post notes: [[citep*:xu-2015-relat][Pre::Post]]. Multiple: [[citep*:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+5. Type: "citealt". Plain citealt:kitchin-2015-examp. With Pre and post notes: [[citealt:xu-2015-relat][Pre::Post]]. Multiple: [[citealt:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+6. Type: "citealt*". Plain citealt*:kitchin-2015-examp. With Pre and post notes: [[citealt*:xu-2015-relat][Pre::Post]]. Multiple: [[citealt*:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+7. Type: "citealp". Plain citealp:kitchin-2015-examp. With Pre and post notes: [[citealp:xu-2015-relat][Pre::Post]]. Multiple: [[citealp:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+8. Type: "citealp*". Plain citealp*:kitchin-2015-examp. With Pre and post notes: [[citealp*:xu-2015-relat][Pre::Post]]. Multiple: [[citealp*:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+9. Type: "citenum". Plain citenum:kitchin-2015-examp. With Pre and post notes: [[citenum:xu-2015-relat][Pre::Post]]. Multiple: [[citenum:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+10. Type: "citetext". Plain citetext:kitchin-2015-examp. With Pre and post notes: [[citetext:xu-2015-relat][Pre::Post]]. Multiple: [[citetext:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+11. Type: "citeauthor". Plain citeauthor:kitchin-2015-examp. With Pre and post notes: [[citeauthor:xu-2015-relat][Pre::Post]]. Multiple: [[citeauthor:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+12. Type: "citeauthor*". Plain citeauthor*:kitchin-2015-examp. With Pre and post notes: [[citeauthor*:xu-2015-relat][Pre::Post]]. Multiple: [[citeauthor*:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+13. Type: "citeyear". Plain citeyear:kitchin-2015-examp. With Pre and post notes: [[citeyear:xu-2015-relat][Pre::Post]]. Multiple: [[citeyear:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+14. Type: "citeyear*". Plain citeyear*:kitchin-2015-examp. With Pre and post notes: [[citeyear*:xu-2015-relat][Pre::Post]]. Multiple: [[citeyear*:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+15. Type: "citeyearpar". Plain citeyearpar:kitchin-2015-examp. With Pre and post notes: [[citeyearpar:xu-2015-relat][Pre::Post]]. Multiple: [[citeyearpar:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+16. Type: "Citet". Plain Citet:kitchin-2015-examp. With Pre and post notes: [[Citet:xu-2015-relat][Pre::Post]]. Multiple: [[Citet:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+17. Type: "Citep". Plain Citep:kitchin-2015-examp. With Pre and post notes: [[Citep:xu-2015-relat][Pre::Post]]. Multiple: [[Citep:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+18. Type: "Citealt". Plain Citealt:kitchin-2015-examp. With Pre and post notes: [[Citealt:xu-2015-relat][Pre::Post]]. Multiple: [[Citealt:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+19. Type: "Citealp". Plain Citealp:kitchin-2015-examp. With Pre and post notes: [[Citealp:xu-2015-relat][Pre::Post]]. Multiple: [[Citealp:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+
+20. Type: "Citeauthor". Plain Citeauthor:kitchin-2015-examp. With Pre and post notes: [[Citeauthor:xu-2015-relat][Pre::Post]]. Multiple: [[Citeauthor:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
