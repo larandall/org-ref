@@ -2315,7 +2315,7 @@ Supported backends: 'html, 'latex, 'ascii, 'org, 'md, 'pandoc" type type)
 	  (format org-ref-ref-html key key))
 	(org-ref-split-and-strip-string keyword) ","))
 
-      ((eq format 'latex)
+      ((or (eq format 'latex) (eq format 'pandoc))
        (if (string= (substring ,type -1) "s")
 	   ;; biblatex format for multicite commands, which all end in s. These
 	   ;; are formated as \cites{key1}{key2}...
