@@ -450,7 +450,8 @@ citations for pandoc export. On most backends, the author will
 appear in the text, and further citation information and any
 locator/citation suffix will appear in parentheses or a footnote.
 These citation styles do not support citation prefixes on pandoc
-export"
+export, except on export to latex formats when
+`org-ref-pandoc-always-use-latex-style-citations' is set to t"
   :type '(repeat :tag "List of citation types" string)
   :group 'org-ref)
 
@@ -481,11 +482,26 @@ context and repeating it in the citation would be awkward."
   '("Citeauthor*" "citetitle" "citetitle" "citetitle*"
     "citedate" "citedate*" "citeurl" "fullcite" "footfullcite"
     "notecite" "Notecite" "pnotecite" "Pnotecite" "fnotecite"
-    "smartcites" "Smartcites" "citenum" "citetext" )
-  "Latex citation commands that are not recognized by pandoc's internal
-citation conversion algorithms. Org-ref will always convert these
-citation commands to pandoc commands on pandoc export, unless
+    "smartcites" "Smartcites" "citenum" "headlesscite")
+  "Latex citation commands that are not recognized as citations by
+pandoc's internal citation conversion algorithms. Org-ref will
+always convert these citation commands to pandoc commands on
+pandoc export, unless
 `org-ref-pandoc-always-use-latex-style-citations' is non-nil."
+  :type '(repeat :tag "List of citation types" string)
+  :group 'org-ref)
+
+(defcustom org-ref-pandoc-totally-unrecognized-types
+  '("nocite" "citetext" )
+  "Latex citation commands that are not recognized as citations
+by pandoc's internal citation conversion algorithms and are not
+preserved as latex commands in latex export. Org-ref will convert
+these citation commands to pandoc citation commands on pandoc
+export, except when
+`org-ref-pandoc-always-use-latex-style-citations' is non-nil. In
+such cases org-ref wraps the citations in latex code which
+prevents pandoc from modifying the citations. This code does not
+affect the formatting of the resulting latex pdfs."
   :type '(repeat :tag "List of citation types" string)
   :group 'org-ref)
 
@@ -548,6 +564,25 @@ before the the last item on a list of in-text style citations in
 pandoc export"
   :type 'boolean
   :group 'org-ref)
+
+(defcustom org-ref-pandoc-use-in-text-citation-styles-in-footnotes
+  t
+  "Use in-text style citation commands inside footnotes to
+  emulate the behavior of biblatex footcite commands on pandoc
+  export. If this variable is set to nil, org-ref defaults to
+  putting standard citation commands within footnotes (pandoc's
+  default behavior). This may lead to parenthetical citations
+  inside footnotes. This variable becomes irrelevant if
+  `org-ref-pandoc-wrap-fn-style-citations' is
+  set to nil.")
+
+(defcustom org-ref-pandoc-wrap-fn-style-citations
+  t
+  "If non-nil, org-ref will convert footcite and other footnote
+  style citation commands into pandoc citation commands and wrap
+  them in footnotes. If it is set to nil, it will convert them to
+  standard pandoc citation commands. This variable is overridden
+  by `org-ref-pandoc-always-use-latex-style-citations'")
 
 (defcustom org-ref-clean-bibtex-entry-hook
   '(org-ref-bibtex-format-url-if-doi
@@ -2375,13 +2410,23 @@ Supported backends: 'html, 'latex, 'ascii, 'org, 'md, 'pandoc" type type)
           (format org-ref-ref-html key key))
         (org-ref-split-and-strip-string keyword) ","))
       ;; Latex and (some) pandoc citations
-      ((or (eq format 'latex)
-           (and (eq format 'pandoc)
-                (or org-ref-pandoc-always-use-latex-style-citations
-                 (not (or org-ref-pandoc-process-all-citation-types-internally
-                          (member ,type org-ref-pandoc-unrecognized-types)
-                          (and (member ,type org-ref-pandoc-in-text-citation-types)
-                               org-ref-pandoc-process-in-text-citations-internally))))))
+      ((or
+        (eq format 'latex)
+        (and
+         (eq format 'pandoc)
+         (not (member ,type org-ref-pandoc-totally-unrecognized-types))
+         (or org-ref-pandoc-always-use-latex-style-citations
+             (not
+              (or org-ref-pandoc-process-all-citation-types-internally
+                  (member ,type org-ref-pandoc-unrecognized-types)
+                  (and (member ,type org-ref-pandoc-in-text-citation-types)
+                       org-ref-pandoc-process-in-text-citations-internally)
+                  ;; ensure all footnote style citations are processed consistently
+                  (and
+                   (member ,type org-ref-pandoc-footnote-citation-types)
+                   (or org-ref-pandoc-use-in-text-citation-styles-in-footnotes
+                       (not
+                        org-ref-pandoc-wrap-fn-style-citations))))))))
        (if (string= (substring ,type -1) "s")
            ;; biblatex format for multicite commands, which all end in s. These
            ;; are formated as \cites{key1}{key2}...
@@ -2477,13 +2522,23 @@ Supported backends: 'html, 'latex, 'ascii, 'org, 'md, 'pandoc" type type)
               (format "-@%s" keyword)
               (when post (format ", %s" post))
               "]"))
-            ((member ,type org-ref-pandoc-footnote-citation-types)
+            ((and (member ,type org-ref-pandoc-footnote-citation-types)
+                  org-ref-pandoc-wrap-fn-style-citations)
+             (if org-ref-pandoc-use-in-text-citation-styles-in-footnotes
+                 (concat
+                  "[fn::"
+                  ;; treat the prefix normal text preceding the in text citation
+                  ;; so that it is not lost
+                  (when pre (format "%s " pre))
+                  (format "@%s" keyword)
+                  (when post (format " [%s]" post))
+                  "]")
              (concat
               "[fn::["
               (when pre (format "%s " pre))
               (format "@%s" keyword)
               (when post (format ", %s" post))
-              "]]"))
+              "]]")))
             ;; All other citation styles with prefix or suffix use default
             ;; pandoc citation format.
             (t
@@ -2532,12 +2587,48 @@ Supported backends: 'html, 'latex, 'ascii, 'org, 'md, 'pandoc" type type)
                     (org-ref-split-and-strip-string keyword)
                     "; ")))
           ;; footnote style citations
-          ((member ,type org-ref-pandoc-footnote-citation-types)
-           (format "[fn::[%s]]"
+          ((and (member ,type org-ref-pandoc-footnote-citation-types)
+                org-ref-pandoc-wrap-fn-style-citations)
+           (if org-ref-pandoc-use-in-text-citation-styles-in-footnotes
+                (let* ((key-list (org-ref-split-and-strip-string keyword))
+                  (last-key (car (last key-list)))
+                  (other-keys (butlast key-list))
+                  (key-separator
+                   (concat org-ref-pandoc-in-text-citation-separator
+                           " "))))
+                  (format "[fn::%s]"
+                   (cond
+                    ((> (safe-length key-list) 2) 
+                     (concat
+                      (mapconcat
+                       (lambda (key) (concat "@" key))
+                       other-keys
+                       key-separator)
+                      (if org-ref-pandoc-use-oxford-style-punctuation
+                          key-separator
+                        " ")
+                      org-ref-pandoc-in-text-citation-conjunction
+                      " @" last-key))
+                    (other-keys
+                     (mapconcat
+                      (lambda (key) (concat "@" key))
+                      key-list
+                      (concat
+                       " "
+                       org-ref-pandoc-in-text-citation-conjunction
+                       " ")))
+                    (t
+                     (concat "@" keyword))))
+                  (format "[fn::[%s]]"
                    (mapconcat
                     (lambda (key) (concat "@" key))
                     (org-ref-split-and-strip-string keyword)
-                    "; ")))
+                    "; "))))
+          ;; format special commands so that pandoc will not automatically
+          ;; delete them or turn them into nonsense.
+          ((and (member ,type org-ref-pandoc-totally-unrecognized-types)
+                org-ref-pandoc-always-use-latex-style-citations)
+           (format "\\unskip{\\%s{ %s}}" ,type keyword))
           ;; All other headline types
           (t
            (format "[%s]"
