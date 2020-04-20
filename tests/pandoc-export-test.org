@@ -7,11 +7,11 @@ Biblatex types
 1. Type: "Cite". Plain Cite:kitchin-2015-examp. With Pre and post notes: [[Cite:xu-2015-relat][Pre::Post]]. Multiple: [[Cite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
 
 
-2. Type: "parencite". Plain parencite:kitchin-2015-examp. With Pre and post notes: [[parencite:xu-2015-relat][Pre::Post]]. Multiple: [[parencite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+1. Type: "parencite". Plain parencite:kitchin-2015-examp. With Pre and post notes: [[parencite:xu-2015-relat][Pre::Post]]. Multiple: [[parencite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
 
-3. Type: "Parencite". Plain Parencite:kitchin-2015-examp. With Pre and post notes: [[Parencite:xu-2015-relat][Pre::Post]]. Multiple: [[Parencite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+2. Type: "Parencite". Plain Parencite:kitchin-2015-examp. With Pre and post notes: [[Parencite:xu-2015-relat][Pre::Post]]. Multiple: [[Parencite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
 
-4. Type: "footcite". Plain footcite:kitchin-2015-examp. With Pre and post notes: [[footcite:xu-2015-relat][Pre::Post]]. Multiple: [[footcite:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
+3. Type: "footcite". Plain footcite:kitchin-2015-examp. With Pre and post notes: [[footcite:xu-2015-relat][Pre::Post]]. Multiple: [[footcite:xu-2015-tunin-oxide,curnan-2015-inves-energ]] Three: footcite:Abild-Pedersen2007,kitchin-2004-role,kitchin-2008-alloy 
 
 5. Type: "footcitetext". Plain footcitetext:kitchin-2015-examp. With Pre and post notes: [[footcitetext:xu-2015-relat][Pre::Post]]. Multiple: [[footcitetext:xu-2015-tunin-oxide,curnan-2015-inves-energ]]
 

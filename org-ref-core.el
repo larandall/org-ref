@@ -2526,15 +2526,17 @@ Supported backends: 'html, 'latex, 'ascii, 'org, 'md, 'pandoc" type type)
                   org-ref-pandoc-wrap-fn-style-citations)
              (if org-ref-pandoc-use-in-text-citation-styles-in-footnotes
                  (concat
-                  "[fn::"
+                  "[fn:: "
                   ;; treat the prefix normal text preceding the in text citation
                   ;; so that it is not lost
                   (when pre (format "%s " pre))
-                  (format "@%s" keyword)
-                  (when post (format " [%s]" post))
-                  "]")
+                   "\\citet"
+                   (when post
+                       (format "[%s]" post))
+                   (format "{%s}" keyword)
+                   "]")
              (concat
-              "[fn::["
+              "[fn:: "
               (when pre (format "%s " pre))
               (format "@%s" keyword)
               (when post (format ", %s" post))
@@ -2586,40 +2588,43 @@ Supported backends: 'html, 'latex, 'ascii, 'org, 'md, 'pandoc" type type)
                     (lambda (key) (concat "-@" key))
                     (org-ref-split-and-strip-string keyword)
                     "; ")))
-          ;; footnote style citations
+          ;; Footnote style citations
           ((and (member ,type org-ref-pandoc-footnote-citation-types)
                 org-ref-pandoc-wrap-fn-style-citations)
+           ;; Use in-text citation commands wrapped in footnotes by default
            (if org-ref-pandoc-use-in-text-citation-styles-in-footnotes
-                (let* ((key-list (org-ref-split-and-strip-string keyword))
-                  (last-key (car (last key-list)))
-                  (other-keys (butlast key-list))
-                  (key-separator
-                   (concat org-ref-pandoc-in-text-citation-separator
-                           " "))))
-                  (format "[fn::%s]"
-                   (cond
-                    ((> (safe-length key-list) 2) 
-                     (concat
-                      (mapconcat
-                       (lambda (key) (concat "@" key))
-                       other-keys
-                       key-separator)
-                      (if org-ref-pandoc-use-oxford-style-punctuation
-                          key-separator
-                        " ")
-                      org-ref-pandoc-in-text-citation-conjunction
-                      " @" last-key))
-                    (other-keys
+               (let* ((key-list (org-ref-split-and-strip-string keyword))
+                      (last-key (car (last key-list)))
+                      (other-keys (butlast key-list))
+                      (key-separator
+                       (concat org-ref-pandoc-in-text-citation-separator
+                               " ")))
+                 (format
+                  "[fn:: %s]"
+                  (cond
+                   ((> (safe-length key-list) 2) 
+                    (concat
                      (mapconcat
-                      (lambda (key) (concat "@" key))
-                      key-list
-                      (concat
-                       " "
-                       org-ref-pandoc-in-text-citation-conjunction
-                       " ")))
-                    (t
-                     (concat "@" keyword))))
-                  (format "[fn::[%s]]"
+                      (lambda (key) (format "\\citet{%s}" key))
+                      other-keys
+                      key-separator)
+                     (if org-ref-pandoc-use-oxford-style-punctuation
+                         key-separator
+                       " ")
+                     org-ref-pandoc-in-text-citation-conjunction
+                     (format " \\citet{%s}" last-key)))
+                   (other-keys
+                    (mapconcat
+                     (lambda (key) (format "\\citet{%s}" key))
+                     key-list
+                     (concat
+                      " "
+                      org-ref-pandoc-in-text-citation-conjunction
+                      " ")))
+                   (t
+                    (format "\\citet{%s}" keyword)))))
+             ;; otherwise use standard pandoc citations commands in footnotes.
+             (format "[fn:: [%s]]"
                    (mapconcat
                     (lambda (key) (concat "@" key))
                     (org-ref-split-and-strip-string keyword)
