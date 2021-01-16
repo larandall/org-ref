@@ -1,0 +1,1 @@
+/home/avery/GDrive/styles/CONTRIBUTING.md
