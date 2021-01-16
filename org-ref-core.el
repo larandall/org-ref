@@ -2536,7 +2536,7 @@ Supported backends: 'html, 'latex, 'ascii, 'org, 'md, 'pandoc" type type)
                    (format "{%s}" keyword)
                    "]")
              (concat
-              "[fn:: "
+              "[fn:: ["
               (when pre (format "%s " pre))
               (format "@%s" keyword)
               (when post (format ", %s" post))
