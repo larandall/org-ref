@@ -50,7 +50,7 @@ instead of a label."
 				    (org-open-link-from-string
 				     (format "ref:%s" label)))))
 		     ,(helm-build-dummy-source "Create new label"
-			:action (lambda (label) 
+			:action (lambda (label)
 				  (with-helm-current-buffer
 				    (if helm-current-prefix-arg
 					(insert (concat "<<" label ">>"))
@@ -117,7 +117,7 @@ Use a double \\[universal-argument] \\[universal-argument] to insert a
                                         ;; insert a new link
                                         (insert
                                          (concat
-                                          org-ref-default-ref-type ":" label))
+                                          (org-ref-infer-ref-type label) ":" label))
                                         )))
                                    ;; one prefix, alternate ref link
                                    ((equal helm-current-prefix-arg '(4))
@@ -133,7 +133,7 @@ Use a double \\[universal-argument] \\[universal-argument] to insert a
                                      (format "[[#%s]]" label)))))))))))
 
 ;;;###autoload
-(defun org-ref ()
+(defun org-ref-helm ()
   "Opens a helm interface to actions for `org-ref'.
 Shows bad citations, ref links and labels.
 This widens the file so that all links go to the right place."
@@ -345,7 +345,7 @@ at the end of you file.
 
 	  ;; unreference labels
 	  (let ((refs (org-element-map (org-element-parse-buffer) 'link
-			(lambda (el) 
+			(lambda (el)
 			  (when (or (string= "ref" (org-element-property :type el))
 				    (string= "eqref" (org-element-property :type el))
 				    (string= "pageref" (org-element-property :type el))
@@ -464,10 +464,9 @@ Run this with the point in a bibtex entry."
                                         'identity
                                         (helm-marked-candidates)
                                         ", "))))))
-        (fallback-source `((name . "Add new keywords")
-                           (dummy)
-                           (action . (lambda (candidate)
-                                       (org-ref-set-bibtex-keywords helm-pattern))))))
+        (fallback-source (helm-build-dummy-source "Add new keywords"
+                           :action (lambda (candidate)
+                                     (org-ref-set-bibtex-keywords helm-pattern)))))
     (helm :sources `(,keyword-source ,fallback-source))))
 
 (provide 'org-ref-helm)

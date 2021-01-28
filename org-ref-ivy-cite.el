@@ -232,7 +232,7 @@ This uses a citeproc library."
 
 (defun or-ivy-bibtex-copy-formatted-citation (entry)
   "Copy formatted citation to clipboard for ENTRY."
-  (kill-new (org-ref-format-entry entry)))
+  (kill-new (org-ref-format-entry (cdr (assoc "=key=" entry)))))
 
 
 (defun or-ivy-bibtex-add-entry (_)
@@ -462,15 +462,14 @@ Use a prefix arg to select the ref type."
      (t
       (insert
        (or (when (looking-at "$") " ") "")
-       (concat org-ref-default-ref-type
+       (concat (org-ref-infer-ref-type label)
 	       ":"
 	       label))))))
-
 
 (require 'hydra)
 (setq hydra-is-helpful t)
 
-(defhydra org-ref-cite-hydra (:color blue)
+(defhydra org-ref-cite-hydra (:color blue :hint nil)
   "
 _p_: Open pdf     _w_: WOS          _g_: Google Scholar _K_: Copy citation to clipboard
 _u_: Open url     _r_: WOS related  _P_: Pubmed         _k_: Copy key to clipboard
@@ -479,7 +478,7 @@ _o_: Open entry   _e_: Email entry  ^ ^                 _q_: quit
 _i_: Insert cite  _h_: change type
 "
   ("o" org-ref-open-citation-at-point nil)
-  ("p" org-ref-open-pdf-at-point nil)
+  ("p" (funcall org-ref-open-pdf-function) nil)
   ("n" org-ref-open-notes-at-point nil)
   ("u" org-ref-open-url-at-point nil)
   ("w" org-ref-wos-at-point nil)
