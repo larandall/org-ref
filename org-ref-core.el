@@ -499,14 +499,14 @@ pandoc export, unless
 (defcustom org-ref-pandoc-totally-unrecognized-types
   '("nocite" "citetext" )
   "Latex citation commands that are not recognized as citations
-by pandoc's internal citation conversion algorithms and are not
-preserved as latex commands in latex export. Org-ref will convert
-these citation commands to pandoc citation commands on pandoc
-export, except when
+by pandoc's internal citation conversion algorithms and which
+pandoc does not preserve as latex commands in latex export.
+Org-ref will convert these citation commands to pandoc citation
+commands on pandoc export, except when
 `org-ref-pandoc-always-use-latex-style-citations' is non-nil. In
-such cases org-ref wraps the citations in latex code which
-prevents pandoc from modifying the citations. This code does not
-affect the formatting of the resulting latex pdfs."
+such cases org-ref preserves these citations by wrapping them in
+latex code that prevents pandoc from corrupting them. This code
+does not affect the formatting of the resulting latex pdfs."
   :type '(repeat :tag "List of citation types" string)
   :group 'org-ref)
 
